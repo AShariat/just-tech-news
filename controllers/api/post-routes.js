@@ -104,13 +104,19 @@ router.post("/", (req, res) => {
 
 // PUT /api/posts/upvote
 router.put("/upvote", (req, res) => {
-  // custom static method created in models/Post.js
-  Post.upvote(req.body, { Vote })
-    .then((updatedPostData) => res.json(updatedPostData))
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json(err);
-    });
+  // make sure the session exists first. We're doing two things here. First, we're checking that a session exists before we even touch the database. Then if a session does exist, we're using the saved user_id property on the session to insert a new record in the vote table. This means that the upvote feature will only work if someone has logged in, so you should log in with a test account on the front end if you haven't already. The first time you click the upvote button, the page will refresh, and the comment count will have gone up by one. Success! If you click the button a second time, however, you'll get an error, because the Sequelize relationships don't allow duplicate entries.
+  if (req.session) {
+    // pass session id along with all destructured properties on req.body
+    Post.upvote(
+      { ...req.body, user_id: req.session.user_id },
+      { Vote, Comment, User }
+    )
+      .then((updatedVoteData) => res.json(updatedVoteData))
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  }
 });
 
 router.put("/:id", (req, res) => {
