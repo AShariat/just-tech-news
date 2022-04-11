@@ -58,7 +58,8 @@ async function loginFormHandler(event) {
       headers: { "Content-Type": "application/json" },
     });
     if (response.ok) {
-      document.location.replace("/");
+      // Automatically redirect users to the dashboard after they successfully log in.
+      document.location.replace("/dashboard");
     } else {
       alert(response.statusText);
     }

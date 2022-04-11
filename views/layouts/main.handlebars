@@ -15,6 +15,7 @@
         </h1>
         <nav>
           {{#if loggedIn}}
+            <a href="/dashboard">dashboard</a>
             {{! Since logout won’t be an actual page that users can visit, it should be a button, but we can still style it to look like a link. }}
             <button id="logout" class="btn-no-style">logout</button>
           {{else}}
