@@ -14,9 +14,13 @@
           <a href="/">Just Tech News</a>
         </h1>
         <nav>
-          {{! Since logout won’t be an actual page that users can visit, it should be a button, but we can still style it to look like a link. }}
-          <button id="logout" class="btn-no-style">logout</button>
-          <a href="/login">login</a>
+          {{#if loggedIn}}
+            <a href="/dashboard">dashboard</a>
+            {{! Since logout won’t be an actual page that users can visit, it should be a button, but we can still style it to look like a link. }}
+            <button id="logout" class="btn-no-style">logout</button>
+          {{else}}
+            <a href="/login">login</a>
+          {{/if}}
         </nav>
       </header>
       <main>
@@ -26,7 +30,9 @@
         Thanks for visiting!
       </footer>
     </div>
-    <script src="/javascript/logout.js"></script>
+    {{#if loggedIn}}
+      <script src="/javascript/logout.js"></script>
+    {{/if}}
   </body>
 
 </html>
